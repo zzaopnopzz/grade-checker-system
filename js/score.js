@@ -1,54 +1,36 @@
-document.addEventListener('DOMContentLoaded',loadScore);
-async function loadScore(){
-const p=new URLSearchParams(location.search);
-const subject=p.get('subject')||sessionStorage.subject||'social';
-const grade=p.get('grade')||sessionStorage.grade||'1';
-const room=p.get('room')||sessionStorage.room||'1';
-const code=p.get('code')||sessionStorage.studentCode||'';
-sessionStorage.subject=subject;sessionStorage.grade=grade;sessionStorage.room=room;sessionStorage.studentCode=code;
-loading('กำลังโหลดคะแนน...');
-try{
-const d=await Api.get(grade,{action:'getStudentScore',grade,room,code,subject});
-if(!d.success)throw new Error(d.message||'ไม่พบข้อมูลนักเรียน');
-renderScore(d);
-}catch(e){document.querySelector('main').innerHTML=`<section class="card"><h2 class="bad">ไม่พบข้อมูล</h2><p>${esc(e.message)}</p><a class="btn primary" href="enter-code.html">กลับไปเข้าสู่ระบบ</a></section>`}
-finally{loaded()}
+function displayStudentScore(data) {
+  console.log('📊 แสดงคะแนน:', data);
+  
+  // แสดงชื่อนักเรียน
+  document.getElementById('studentName').textContent = data.student.name;
+  
+  // แสดงคะแนนหน่วย
+  if (data.units && data.units.length > 0) {
+    const unitsHtml = data.units.map(u => 
+      `<div class="score-item">
+        <span>${u.title}</span>
+        <span>${u.score}/${u.fullScore}</span>
+      </div>`
+    ).join('');
+    document.getElementById('unitsContainer').innerHTML = unitsHtml;
+  }
+  
+  // แสดงคะแนนรายชั่วโมง
+  if (data.hourly && data.hourly.length > 0) {
+    const hourlyHtml = data.hourly.map(h => 
+      `<div class="score-item">
+        <span>${h.title}</span>
+        <span>${h.score}</span>
+      </div>`
+    ).join('');
+    document.getElementById('hourlyContainer').innerHTML = hourlyHtml;
+  }
+  
+  // แสดงคะแนนสรุป
+  if (data.gradeSummary) {
+    document.getElementById('beforeMidterm').textContent = data.gradeSummary.beforeMidterm;
+    document.getElementById('midterm').textContent = data.gradeSummary.midterm;
+    document.getElementById('total').textContent = data.gradeSummary.total;
+    document.getElementById('grade').textContent = data.gradeSummary.grade;
+  }
 }
-function renderScore(d){
-const s=d.student||{};
-$('#studentProfile').innerHTML=`<h2>${esc(s.name||'-')}</h2><p>ชั้น ${esc(d.classLabel||'')} เลขที่ ${esc(s.number||'-')} รหัส ${esc(s.code||'-')}</p><p>วิชา ${esc(CONFIG.SUBJECTS[d.subject]||d.subject||'สังคมศึกษา')}</p>`;
-renderIndividual(d);renderHourly(d);renderUnits(d);renderAssignments(d);renderGrades(d)
-}
-function renderIndividual(d){
-const g=d.groupScores||{};
-$('#individualGroupScores').innerHTML=[
-card('คะแนนเดี่ยว',g.individual??'-','จากกิจกรรมรายบุคคล'),
-card('คะแนนกลุ่ม',g.group??'-','จากกิจกรรมกลุ่ม'),
-card('คะแนนตอบคำถาม',g.question??'-','ตารางรายห้อง'),
-card('รวมกิจกรรม',g.total??'-','เดี่ยว + กลุ่ม + ตอบคำถาม')
-].join('')
-}
-function renderHourly(d){
-const hs=d.hourly||[];const done=hs.filter(h=>isDone(h.score)).length;const percent=hs.length?done/hs.length*100:0;
-$('#hourlyProgress').innerHTML=`<div class="score-card"><strong>${done}/${hs.length}</strong><p>ความก้าวหน้ารายชั่วโมง ${pct(percent)}</p><div class="progress"><span style="width:${percent}%"></span></div></div>`+
-hs.map((h,i)=>`<div class="hour-card"><div class="hour-head"><b>${esc(h.title||'ชั่วโมงที่ '+(i+1))}</b><span class="${isDone(h.score)?'ok':'bad'}">${isDone(h.score)?esc(h.score):'ยังไม่ทำ'}</span></div><p>วันที่เริ่ม: ${esc(h.startDate||'-')} | วันที่สิ้นสุด: ${esc(h.endDate||'-')}</p>${h.youtube?`<a class="youtube" href="${esc(h.youtube)}" target="_blank">ดูวิดีโอประกอบ</a>`:''}</div>`).join('')
-}
-function renderUnits(d){
-$('#unitScores').innerHTML=(d.units||[]).map((u,i)=>card(u.title||'หน่วยที่ '+(i+1),u.score??'-',u.fullScore?'เต็ม '+u.fullScore:'')).join('')||card('คะแนนหน่วย','-','ยังไม่มีข้อมูล')
-}
-function renderAssignments(d){
-$('#assignmentScores').innerHTML=(d.assignments||[]).map((a,i)=>card(a.title||'ชิ้นงาน '+(i+1),isDone(a.score||a.status)?(a.score||a.status||'ส่งแล้ว'):'ยังไม่ส่ง',a.fullScore?'เต็ม '+a.fullScore:'')).join('')||card('ชิ้นงาน','-','ยังไม่มีข้อมูล')
-}
-function renderGrades(d){
-const g=d.gradeSummary||{};
-$('#gradeSummary').innerHTML=[
-card('ก่อนกลางภาค',g.beforeMidterm??'-','เต็ม 25'),
-card('สอบกลางภาค',g.midterm??'-','เต็ม 20'),
-card('หลังกลางภาค',g.afterMidterm??'-','เต็ม 25'),
-card('สอบปลายภาค',g.finalExam??'-','เต็ม 30'),
-card('คะแนนรวม',g.total??'-','เต็ม 100'),
-card('เกรด',g.grade??'-','ผลการเรียน')
-].join('')
-}
-function card(t,v,p){return `<div class="score-card"><p>${esc(t)}</p><strong>${esc(v)}</strong><p>${esc(p||'')}</p></div>`}
-function isDone(v){const x=String(v??'').trim();return x&&x!=='0'&&x!=='-'&&!/ยังไม่|ไม่ส่ง|ขาด/i.test(x)}
