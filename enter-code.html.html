@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>เข้าสู่ระบบนักเรียน</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="enter-code">
+<header class="topbar">
+<a href="select-room.html" class="back">← เลือกห้อง</a>
+<div><p class="school">โรงเรียนเสนศิริอนุสรณ์</p><h1>เข้าสู่ระบบนักเรียน</h1></div>
+</header>
+<main class="container narrow">
+<section class="card">
+<h2 id="roomTitle">กรอกรหัสนักเรียน</h2>
+<label>ค้นหาชื่อ-สกุล</label>
+<input id="nameSearch" type="search" placeholder="พิมพ์ชื่อหรือนามสกุล">
+<div id="studentResults" class="result-list"></div>
+<label>รหัสนักเรียน</label>
+<input id="studentCode" type="password" placeholder="กรอกรหัสนักเรียน">
+<button id="loginStudentBtn" class="btn primary full">ดูคะแนน</button>
+<p id="loginMsg" class="msg"></p>
+</section>
+</main>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

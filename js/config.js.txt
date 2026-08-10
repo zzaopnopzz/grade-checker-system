@@ -1,0 +1,24 @@
+const CONFIG={
+APP_NAME:'ระบบแจ้งคะแนนออนไลน์ ครูอ๊อฟ',
+SCHOOL_NAME:'โรงเรียนเสนศิริอนุสรณ์',
+DEFAULT_TEACHER_CODE:'xmen8888',
+API:{
+MAIN:'PASTE_MAIN_API_URL_HERE',
+M1:'PASTE_M1_API_URL_HERE',
+M2:'PASTE_M2_API_URL_HERE',
+M3:'https://script.google.com/macros/s/AKfycbyKtKFfFnTN-PsdTmqRrjnMwHLCLUIEM_yhTSdpGMHQtk61_XFsW8y5gvl9bEx5xPxa/exec'
+},
+LINKS:{
+TEACHER_SITE:'https://sites.google.com/view/aopz',
+YOUTUBE:'https://www.youtube.com/@Aopnop'
+},
+SUBJECTS:{social:'สังคมศึกษา',buddhism:'พระพุทธศาสนา'},
+ROOMS:[
+{grade:'1',room:'1',code:'101',label:'ม.1/1'},
+{grade:'1',room:'2',code:'102',label:'ม.1/2'},
+{grade:'2',room:'1',code:'201',label:'ม.2/1'},
+{grade:'2',room:'2',code:'202',label:'ม.2/2'},
+{grade:'3',room:'1',code:'301',label:'ม.3/1'},
+{grade:'3',room:'2',code:'302',label:'ม.3/2'}
+]
+};

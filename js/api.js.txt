@@ -1,0 +1,34 @@
+const Api={
+url(grade){if(!grade)return CONFIG.API.MAIN;return CONFIG.API['M'+grade]||''},
+get(grade,params){const url=this.url(grade);return this.jsonp(url,params).catch(()=>this.fetch(url,params))},
+main(params){return this.get(null,params)},
+jsonp(url,params={}){
+return new Promise((resolve,reject)=>{
+if(!url)return reject(new Error('API URL ว่าง'));
+const cb='cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+const q=new URLSearchParams(params);q.set('callback',cb);
+const s=document.createElement('script');let done=false;
+const timer=setTimeout(()=>finish(new Error('timeout')),18000);
+window[cb]=data=>finish(null,data);
+s.onerror=()=>finish(new Error('network'));
+s.src=url+(url.includes('?')?'&':'?')+q.toString();
+document.body.appendChild(s);
+function finish(err,data){if(done)return;done=true;clearTimeout(timer);delete window[cb];s.remove();err?reject(err):resolve(data)}
+})
+},
+async fetch(url,params={}){
+const q=new URLSearchParams(params);
+const r=await fetch(url+(url.includes('?')?'&':'?')+q.toString(),{cache:'no-store'});
+if(!r.ok)throw new Error('HTTP '+r.status);
+return r.json()
+}
+};
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const num=v=>{const n=parseFloat(String(v??'').replace(/[^\d.-]/g,''));return isNaN(n)?0:n};
+const fmt=v=>Number.isInteger(num(v))?String(num(v)):num(v).toFixed(2).replace(/\.00$/,'');
+const pct=v=>Math.round(num(v))+'%';
+function loading(text='กำลังโหลดข้อมูล...'){let e=$('#loading');if(!e){e=document.createElement('div');e.id='loading';e.className='loading';e.innerHTML='<div class="loading-box"><div class="spinner"></div><p></p></div>';document.body.appendChild(e)}$('p',e).textContent=text;e.hidden=false}
+function loaded(){const e=$('#loading');if(e)e.hidden=true}
+function csvDownload(rows,name){const csv='\uFEFF'+rows.map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();a.remove()}

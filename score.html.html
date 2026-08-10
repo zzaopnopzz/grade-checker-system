@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>คะแนนนักเรียน</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="score">
+<header class="topbar">
+<a href="enter-code.html" class="back">← กลับ</a>
+<div><p class="school">โรงเรียนเสนศิริอนุสรณ์</p><h1>คะแนนนักเรียน</h1></div>
+</header>
+<main class="container">
+<section id="studentProfile" class="profile-card"></section>
+<section class="score-section">
+<h2>1. คะแนนเดี่ยวและคะแนนกลุ่ม</h2>
+<div id="individualGroupScores" class="grid two"></div>
+</section>
+<section class="score-section">
+<h2>2. ความก้าวหน้าการทดสอบท้ายชั่วโมง</h2>
+<div id="hourlyProgress"></div>
+</section>
+<section class="score-section">
+<h2>3. คะแนนหน่วยการเรียนรู้</h2>
+<div id="unitScores" class="grid three"></div>
+</section>
+<section class="score-section">
+<h2>4. สถานะชิ้นงาน</h2>
+<div id="assignmentScores" class="grid three"></div>
+</section>
+<section class="score-section">
+<h2>5. สรุปคะแนนและเกรด</h2>
+<div id="gradeSummary" class="grid three"></div>
+</section>
+</main>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/score.js"></script>
+</body>
+</html>

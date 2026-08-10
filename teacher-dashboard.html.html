@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แดชบอร์ดครู</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="teacher-dashboard">
+<header class="topbar">
+<a href="index.html" class="back">← หน้าแรก</a>
+<div><p class="school">โรงเรียนเสนศิริอนุสรณ์</p><h1>แดชบอร์ดครู</h1></div>
+</header>
+<main class="container">
+<section class="toolbar card">
+<select id="subjectSelect"><option value="social">สังคมศึกษา</option><option value="buddhism">พระพุทธศาสนา</option></select>
+<button id="refreshDashboardBtn" class="btn primary">รีเฟรช</button>
+<button id="exportDashboardBtn" class="btn green">ส่งออก CSV</button>
+<button id="logoutBtn" class="btn dark">ออกจากระบบ</button>
+</section>
+<section id="dashboardSummary" class="grid four"></section>
+<section class="card"><h2>ภาพรวมห้องเรียน</h2><div id="roomsOverview" class="grid three"></div></section>
+<section class="card"><h2>ตารางสรุป</h2><div id="dashboardTable" class="table-wrap"></div></section>
+<section class="card"><h2>Top 10 คะแนนสูงสุด</h2><div id="topStudents" class="table-wrap"></div></section>
+</main>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/teacher.js"></script>
+</body>
+</html>
