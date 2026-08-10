@@ -6,7 +6,7 @@ API:{
 MAIN:'https://script.google.com/macros/s/AKfycbxa7GfbrJrbLv7-7odK6xp-nXXUF5Bo9VBFerUya3sVjtYcflIOeGvV5HzsWnuYxIv8/exec',
 M1:'https://script.google.com/macros/s/AKfycbx08YuMuB4UM8kk9istZDgZEwO-Jyj9j8jMnUDX5p5zOQ3r2jdjoYFTThzbwLOcWaTKBw/exec',
 M2:'https://script.google.com/macros/s/AKfycbxsEyVDmSwdoZcL2kQb2NZ2FjWFMtBUnSb4pRpx8p_RnmDZnGElZUhez8dUFYEfxXDPHQ/exec',
-M3:'https://script.google.com/macros/s/AKfycbzlHwDXCnG5wqa-9Q_-8dtxoRXgHHIXkPetaQPl_fpA7vOTx5WvFNjLn661eDMPg80/exec'
+M3:'https://script.google.com/macros/s/AKfycbwmm681r1s_ncr4BS2ECa_krqFL-R9klgwvcn2iSsjO3_j3ftFSxJqq0AtsSzqhPtU/exec'
 },
 LINKS:{
 TEACHER_SITE:'https://sites.google.com/view/aopz',
