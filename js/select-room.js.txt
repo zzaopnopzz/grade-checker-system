@@ -1,0 +1,62 @@
+// ดึงข้อมูลจาก URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const grade = urlParams.get('grade');
+const subject = urlParams.get('subject');
+
+console.log('Grade:', grade);
+console.log('Subject:', subject);
+
+// ตรวจสอบว่ามีข้อมูลครบหรือไม่
+if (!grade || !subject) {
+    alert('ข้อมูลไม่ครบถ้วน กรุณาเลือกใหม่');
+    window.location.href = 'index.html';
+}
+
+// แสดงข้อมูลวิชาและชั้นเรียน
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('CONFIG:', CONFIG);
+    
+    const subjectData = CONFIG.SUBJECTS[subject];
+    const gradeData = CONFIG.GRADES[grade];
+    
+    console.log('Subject Data:', subjectData);
+    console.log('Grade Data:', gradeData);
+    
+    if (!subjectData || !gradeData) {
+        alert('ไม่พบข้อมูลวิชาหรือชั้นเรียน');
+        window.location.href = 'index.html';
+        return;
+    }
+    
+    // แสดงชื่อวิชา
+    document.getElementById('subjectIcon').textContent = subjectData.icon;
+    document.getElementById('subjectName').textContent = subjectData.name;
+    
+    // แสดงชั้นเรียน
+    document.getElementById('gradeInfo').textContent = gradeData.name;
+    
+    // สร้างปุ่มห้องเรียน
+    const roomGrid = document.getElementById('roomGrid');
+    roomGrid.innerHTML = '';
+    
+    console.log('Rooms:', gradeData.rooms);
+    
+    gradeData.rooms.forEach(room => {
+        const roomCard = document.createElement('div');
+        roomCard.className = 'room-card';
+        roomCard.innerHTML = `
+            <div class="room-number">ห้อง ${room}</div>
+            <div class="room-label">ม.${grade}/${room}</div>
+        `;
+        
+        roomCard.addEventListener('click', () => {
+            console.log('Selected room:', room);
+            // ไปหน้ากรอกรหัส
+            window.location.href = `enter-code.html?grade=${grade}&room=${room}&subject=${subject}`;
+        });
+        
+        roomGrid.appendChild(roomCard);
+    });
+    
+    console.log('Room grid created');
+});
